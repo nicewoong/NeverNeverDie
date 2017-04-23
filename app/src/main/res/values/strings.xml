@@ -14,7 +14,7 @@
 
     <!-- Always safe on Dialog Message-->
     <string name="always_safe_on_dialog_message">I\'ll keep you safe all the time even while you don\'t use the application.
-        I\ll give you warning when you enter a dangerous area detecting your location signal.
+        I\'ll give you warning when you are near dangerous area detecting your location signal.
         \nDo not die.</string>
     <string name="always_safe_on_dialog_title">Always safe</string>
     <string name="always_safe_on_dialog_confirm_button">Keep me safe</string>
