@@ -23,6 +23,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.CheckAroundMeMapActivity"></activity>
+
+        <!--GoogleMapAPI 사용-->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCIXSV7y6ZX0mYlAJkWkWGrHTNOqwh_LBE"/>
+
     </application>
 
 </manifest>
