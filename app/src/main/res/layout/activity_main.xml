@@ -33,6 +33,7 @@
 
         <!-- check around my location button-->
         <Button
+            android:id="@+id/button_check_around_me"
             android:text="Check around me !"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -44,6 +45,7 @@
 
         <!-- Turn on/off button for background checking service-->
         <Button
+            android:id="@+id/button_background_service_switch"
             android:text="Always-Safe OFF "
             android:textColor="#FFFFFF"
             android:textStyle="bold"
