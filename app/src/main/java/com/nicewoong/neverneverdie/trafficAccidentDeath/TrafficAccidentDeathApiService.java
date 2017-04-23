@@ -45,10 +45,7 @@ public interface TrafficAccidentDeathApiService {
             @Query("guGun") String guGun
     );
 
-//    @GET("getRestTrafficAccidentDeath?servicekey=PYWezzCNSGTHF5aJALsLoxzCziUi5d7B1jEPrU87TacdNZQoVimSQG&searchYear=2014&siDo=1100&guGun=1117")
-//    Call<TrafficAccidentDeath> getTrafficAccidentDeathList(
-//
-//    );
+
 
 
 }
