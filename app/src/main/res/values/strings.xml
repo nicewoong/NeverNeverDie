@@ -1,3 +1,10 @@
 <resources>
+    <!--App Name-->
     <string name="app_name">Never Never Die !</string>
+
+    <!--Button Text on MainActivity-->
+    <string name="button_check_around_me_text">Check around me !</string>
+    <string name="button_always_safe_on_text">Always-Safe ON</string>
+    <string name="button_always_safe_off_text">Always-Safe OFF</string>
+
 </resources>

@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Button Colors-->
+    <color name="colorButtonAlwaysSafeOn">#00FA9A</color>
+    <color name="colorButtonAlwaysSafeOFF">#778899</color>
+    <color name="colorButtonCheckAroundMe">#DB7093</color>
+
+
 </resources>
