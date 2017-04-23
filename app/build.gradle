@@ -29,6 +29,7 @@ dependencies {
 
     compile 'com.squareup.retrofit2:retrofit:2.0.2'//Retrofit library
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'//GSON library
+    compile 'com.google.android.gms:play-services:10.2.1' // Google Map API
 
-    \
+
 }
