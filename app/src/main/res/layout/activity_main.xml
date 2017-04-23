@@ -21,6 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true">
+
+        <!--Main image-->
         <ImageButton
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -29,17 +31,23 @@
 
         />
 
+        <!-- check around my location button-->
         <Button
             android:text="Check around me !"
             android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="#DB7093"
             android:layout_width="280dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
             android:textSize="20sp"/>
 
+        <!-- Turn on/off button for background checking service-->
         <Button
-            android:text="Always-Safe On "
+            android:text="Always-Safe OFF "
+            android:textColor="#FFFFFF"
             android:textStyle="bold"
+            android:background="#778899"
             android:layout_width="280dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
