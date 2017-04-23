@@ -12,6 +12,13 @@
     <string name="dangerous_spot_alert_dialog_title">Never Die !!</string>
     <string name="dangerous_spot_alert_dialog_confirm_button">I\'ll never die !</string>
 
+    <!-- Always safe on Dialog Message-->
+    <string name="always_safe_on_dialog_message">I\'ll keep you safe all the time even while you don\'t use the application.
+        I\ll give you warning when you enter a dangerous area detecting your location signal.
+        \nDo not die.</string>
+    <string name="always_safe_on_dialog_title">Always safe</string>
+    <string name="always_safe_on_dialog_confirm_button">Keep me safe</string>
+
 
 
 </resources>

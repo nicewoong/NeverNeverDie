@@ -91,7 +91,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }else {
                     alwaysSafeCheckingButton.setText("Always-Safe ON");
                     alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOn));
-
+                    //dialog로 확인하기
+                    NeverDieDialog confirmDialog = new NeverDieDialog(this);
+                    confirmDialog.showAlwaysSafeOnDialog();
                     alwaysSafeCheckingButtonFlag = true;
                 }
                 break;
