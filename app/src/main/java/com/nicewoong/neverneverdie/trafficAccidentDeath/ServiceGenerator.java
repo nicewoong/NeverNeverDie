@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ServiceGenerator {
 
-    private static final String ACCIDENT_DEATH_API_ROOT_URL = "http://apis.data.go.kr/B552061/trafficAccidentDeath/";//base Url은 '/'로 끝나야 한다.
+    public static final String ACCIDENT_DEATH_API_ROOT_URL = "http://apis.data.go.kr/B552061/trafficAccidentDeath/";//base Url은 '/'로 끝나야 한다.
 
 
     /**

@@ -1,5 +1,6 @@
 package com.nicewoong.neverneverdie.trafficAccidentDeath;
 
+import android.app.Service;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -82,7 +83,7 @@ public class TrafficAccidentDeathDataCom {
         OkHttpClient client = new OkHttpClient();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(MainActivity.TRAFFIC_ACCIDENT_DEATH_API_KEY)
+                .baseUrl(ServiceGenerator.ACCIDENT_DEATH_API_ROOT_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
