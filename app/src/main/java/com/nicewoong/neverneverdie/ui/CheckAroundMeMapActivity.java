@@ -1,15 +1,10 @@
 package com.nicewoong.neverneverdie.ui;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -115,7 +110,11 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
         //옵션을 활용해 써클을 추가합니다
         Circle circle = map.addCircle(circleOptions); // return 되는 circle 은 나중에 변경가능 (Mutable)
 
-        addDangerousLocationMarker(map);
+        addDangerousLocationMarker(map); // <= test data set (2014 daegu)
+
+        //Alert dialog 띄우기  -> 그냥 바로 띄우기. 보여주기용
+        NeverDieDialog alertDialog = new NeverDieDialog(this);
+        alertDialog.showDangerousAlertDialog();
 
     }
 

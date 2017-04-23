@@ -7,4 +7,11 @@
     <string name="button_always_safe_on_text">Always-Safe ON</string>
     <string name="button_always_safe_off_text">Always-Safe OFF</string>
 
+    <!-- Dangerous spot alert Dialog Message-->
+    <string name="dangerous_spot_alert_dialog_message">Be careful! It\'s a dangerous area near!  </string>
+    <string name="dangerous_spot_alert_dialog_title">Never Die !!</string>
+    <string name="dangerous_spot_alert_dialog_confirm_button">I\'ll never die !</string>
+
+
+
 </resources>
