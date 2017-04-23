@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.nicewoong.neverneverdie.R;
+import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDataCreator;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
