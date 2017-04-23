@@ -1,6 +1,5 @@
 package com.nicewoong.neverneverdie.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.nicewoong.neverneverdie.R;
-import com.nicewoong.neverneverdie.trafficAccidentDeath.TrafficAccidentDeathDataCom;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -28,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     button
      */
     public Button checkAroundMeButton;
+    public Button alwaysSafeCheckingButton;
+    private boolean alwaysSafeCheckingButtonFlag = false; // Button Toggle flag
 
 
     @Override
@@ -39,10 +39,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //        TrafficAccidentDeathDataCom trafficAccidentDeathDataCom = new TrafficAccidentDeathDataCom(getApplicationContext());
 //        trafficAccidentDeathDataCom.setTrafficAccidentDeathList(TRAFFIC_ACCIDENT_DEATH_API_KEY,"2014","2200","2204");
-
         // Button Register
+        registerButtons();
+
+    }
+
+    /**
+     *  find Button View by ID
+     *  And Register Button onClickListener
+     */
+    public void registerButtons() {
         checkAroundMeButton = (Button)findViewById(R.id.button_check_around_me);
         checkAroundMeButton.setOnClickListener(this); // Register onClickListener
+        alwaysSafeCheckingButton = (Button)findViewById(R.id.button_always_safe_checking);
+        alwaysSafeCheckingButton.setOnClickListener(this); // Register onClickListener
     }
 
 
@@ -52,9 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public void openCheckAroundMeMapActivity() {
         Intent intent = new Intent(this, CheckAroundMeMapActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.edit_message);
-//        String message = editText.getText().toString();
-//        intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }
 
@@ -73,6 +80,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d(MainActivity.TAG_PROCEDURE_DEBUG,"Check around me 버튼을 클릭했습니다");
                 openCheckAroundMeMapActivity();
                 break;
+
+            case R.id.button_always_safe_checking:
+                if(alwaysSafeCheckingButtonFlag==true) {
+                    alwaysSafeCheckingButton.setText("Always-Safe OFF");
+                    alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOFF));
+
+                    alwaysSafeCheckingButtonFlag = false;
+                }else {
+                    alwaysSafeCheckingButton.setText("Always-Safe ON");
+                    alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOn));
+
+                    alwaysSafeCheckingButtonFlag = true;
+                }
+                break;
+
+            default:
+
         }
     }
 }
