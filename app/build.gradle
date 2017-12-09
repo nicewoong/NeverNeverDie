@@ -10,6 +10,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // Enabling multidex support.
+        multiDexEnabled true
+
+
     }
     buildTypes {
         release {
@@ -29,7 +33,8 @@ dependencies {
 
     compile 'com.squareup.retrofit2:retrofit:2.0.2'//Retrofit library
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'//GSON library
-    compile 'com.google.android.gms:play-services:10.2.1' // Google Map API
+    compile 'com.google.android.gms:play-services:10.2.1' // for Google Map API
+    compile 'com.android.support:multidex:1.0.0'// multidex support.
 
 
 }
