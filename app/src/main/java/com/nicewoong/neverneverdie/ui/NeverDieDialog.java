@@ -22,6 +22,7 @@ public class NeverDieDialog {
 
     /**
      * 위험지역 주변 500m 근처에 진입하면 Alert 다이얼로그를 띄어줍니다.
+     * todo notification 으로 구현할 것을 고려해보자 (앱을 이용하고 있지 않을 때 알림을 주기 위해서 )
      */
     public void showDangerousAlertDialog() {
         // 다이얼로그 바디

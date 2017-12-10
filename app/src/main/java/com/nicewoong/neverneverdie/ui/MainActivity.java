@@ -9,28 +9,29 @@ import android.widget.Button;
 
 import com.nicewoong.neverneverdie.R;
 import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathAPIRequestTask;
+import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathData;
 
 import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     /*
-    Pulbic data API KEY (for "trafficAccidentDeath")
-    PYWezzCNSGTHF5aJALsLoxzCziUi5d7B1jEPrU87TacdNZQoVimSQG%2FFBafP1RRBRZa1XVGX5babWe7wwSXr%2FQ%3D%3D
+    Tags for Log
      */
-
-    public static String TRAFFIC_ACCIDENT_DEATH_API_KEY ="PYWezzCNSGTHF5aJALsLoxzCziUi5d7B1jEPrU87TacdNZQoVimSQG%2FFBafP1RRBRZa1XVGX5babWe7wwSXr%2FQ%3D%3D";
-//    public static String
-
     public static String TAG_PROCEDURE_DEBUG  = "TAG_PROCEDURE_DEBUG";
     public static String TAG_REST_API_TEST  = "TAG_REST_API_TEST";
 
     /*
-    button
+    UI button
      */
     public Button checkAroundMeButton;
     public Button alwaysSafeCheckingButton;
     private boolean alwaysSafeCheckingButtonFlag = false; // Button Toggle flag
+
+    /*
+    Static variable that can be accessed anywhere in the application
+     */
+    public static AccidentDeathData accidentDeathData; // HTTP request 를 통해 얻은 교통사망정보 전체 데이터 셋 (AccidentDeathAPIRequestTask 의 수행결과로 데이터 저장)
 
 
     @Override
@@ -46,7 +47,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         AccidentDeathAPIRequestTask requestTask = new AccidentDeathAPIRequestTask();
         try {
-            requestTask.execute(requestTask.getRequestUrl("2014","1100", "1117"));
+            requestTask.execute(requestTask.getRequestUrl("2015","2200", ""));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        AccidentDeathAPIRequestTask requestTask2 = new AccidentDeathAPIRequestTask();
+        try {
+            requestTask2.execute(requestTask2.getRequestUrl("2014","2200", ""));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -112,4 +123,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-}
+
+
+
+}// end of class
+

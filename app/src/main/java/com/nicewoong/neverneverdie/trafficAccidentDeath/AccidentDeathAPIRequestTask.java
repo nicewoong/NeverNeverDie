@@ -23,9 +23,9 @@ import java.net.URLEncoder;
  * Rest api 를 통해 공공데이터 포털로부터 교통사망사고 정보를 받아오는 작업을 하는 클래스입니다.
  * AsyncTask 를 상속하여 비동기적으로 thread 를 생성하여 Open API 서버와 통신합니다
  * background 작업을 실행시키기 위해서는 class 의 instance 를 생성하고 execute() 메서드를 호출합니다.
- * 특정 클래스에서 사용하기 위해 본 클래스에서 AsyncTask background작업을 하지 않고,
- * getRequestUrl(), publishHttpRequest() 를 활용해서 필요한 부분에서 AsyncTask Anonymous class 를 구현해서 사용하는 것이 유용할 것
- *
+ * 하나의 객체(AsyncTask)로 여러번 execute 할수 없음 -> 인스턴스를 새로 생성한 후 execute()할 것
+ * 특정 클래스에서 사용하기 위해 본 클래스에서 AsyncTask background 작업을 하지 않고,
+ * getRequestUrl(), publishHttpRequest() 를 활용해서 필요한 부분에서 AsyncTask Anonymous class 를 구현해서 사용하는 것도 가능
  */
 public class AccidentDeathAPIRequestTask extends AsyncTask<URL, Void, JSONObject> {
 
@@ -86,6 +86,20 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<URL, Void, JSONObject
     @Override
     protected void onPostExecute(JSONObject result) {
         super.onPostExecute(result);
+
+        Log.d(MainActivity.TAG_REST_API_TEST, "onPostExecute 시작작, result = "
+                + result); //화면에 출력해봅시다
+
+        if(result != null) {
+            MainActivity.accidentDeathData = new AccidentDeathData(result); // HTTP request 로 얻은 결과를 글로벌 변수에 저장해줍니다.
+        }else {
+            MainActivity.accidentDeathData = new AccidentDeathData();
+        }
+
+        Log.d(MainActivity.TAG_REST_API_TEST, "onPostExecute 종료,  getAccidentDeathList().length = "
+                + MainActivity.accidentDeathData.getAccidentDeathList().length()); //화면에 출력해봅시다
+
+
     }
 
 
@@ -105,7 +119,6 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<URL, Void, JSONObject
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("GET");
         httpURLConnection.setRequestProperty("Content-type", "application/json");
-        System.out.println("Response code: " + httpURLConnection.getResponseCode());
 
         BufferedReader bufferedReader;
         if(httpURLConnection.getResponseCode() >= 200 && httpURLConnection.getResponseCode() <= 300) {
@@ -128,7 +141,7 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<URL, Void, JSONObject
 
         return resultStringBuilder.toString();
 
-    }
+    }// end of publishHttpRequest()
 
 
 
@@ -150,11 +163,11 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<URL, Void, JSONObject
 
         /*Service Key*/
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + SERVICE_KEY);
-        /*코드종류 코드값 14년도 2014 13년도 2013 12년도 2012 */
+        /*년도 코드종류 코드값 14년도 2014 13년도 2013 12년도 2012 */
         urlBuilder.append("&" + URLEncoder.encode("searchYear","UTF-8") + "=" + URLEncoder.encode(year, "UTF-8"));
-        /*코드종류 코드값 전체 공백시 전체 선택 서울특별시 1100 부산광역시 1200 대전광역시 2500 대구광역시 2200 광주광역시 2400 인천광역시 2300 울산광역시 2600 세종특별자치시 2700 경기도 1300 강원도 1400 충청남도 1600 충청북도 1500 전라남도 1800 전라북도 1700 경상남도 2000 경상북도 1900 제주특별자치도 2100 */
+        /*시도 코드종류 코드값 서울특별시 1100 부산광역시 1200 대전광역시 2500 대구광역시 2200 광주광역시 2400 인천광역시 2300 울산광역시 2600 세종특별자치시 2700 경기도 1300 강원도 1400 충청남도 1600 충청북도 1500 전라남도 1800 전라북도 1700 경상남도 2000 경상북도 1900 제주특별자치도 2100 */
         urlBuilder.append("&" + URLEncoder.encode("siDo","UTF-8") + "=" + URLEncoder.encode(siDoCode, "UTF-8"));
-        /*시도 코드종류 코드값 서울특별시 강남구 1116 강동구 1117 강북구 1124 강서구 1111 관악구 1115 광진구 1123 구로구 1112 금천구 1125 노원구 1122 도봉구 1107 동대문구 1105 동작구 1114 마포구 1110 서대문구 1109 서초구 1119 성동구 1104 성북구 1106 송파구 1118 양천구 1120 영등포구 1113 용산구 1103 은평구 1108 종로구 1101 중구 1*/
+        /*구군 코드종류 코드값 (전체 공백시 전체 선택) */
         urlBuilder.append("&" + URLEncoder.encode("guGun","UTF-8") + "=" + URLEncoder.encode(guGunCode, "UTF-8"));
 
         URL url = new URL(urlBuilder.toString());
