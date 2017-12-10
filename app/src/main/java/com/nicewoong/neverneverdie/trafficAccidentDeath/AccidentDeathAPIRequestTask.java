@@ -23,6 +23,9 @@ import java.net.URLEncoder;
  * Rest api 를 통해 공공데이터 포털로부터 교통사망사고 정보를 받아오는 작업을 하는 클래스입니다.
  * AsyncTask 를 상속하여 비동기적으로 thread 를 생성하여 Open API 서버와 통신합니다
  * background 작업을 실행시키기 위해서는 class 의 instance 를 생성하고 execute() 메서드를 호출합니다.
+ * 특정 클래스에서 사용하기 위해 본 클래스에서 AsyncTask background작업을 하지 않고,
+ * getRequestUrl(), publishHttpRequest() 를 활용해서 필요한 부분에서 AsyncTask Anonymous class 를 구현해서 사용하는 것이 유용할 것
+ *
  */
 public class AccidentDeathAPIRequestTask extends AsyncTask<URL, Void, JSONObject> {
 
