@@ -9,7 +9,7 @@ import org.json.JSONException;
  * Created by nicewoong on 2017. 4. 23..
  */
 
-public class AccidentDataCreator {
+public class AccidentTestDataCreator {
 
     public static JSONArray getTestJsonDataList(String jsonString) {
 

@@ -31,8 +31,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
 
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'//Retrofit library
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'//GSON library
     compile 'com.google.android.gms:play-services:10.2.1' // for Google Map API
     compile 'com.android.support:multidex:1.0.0'// multidex support.
 

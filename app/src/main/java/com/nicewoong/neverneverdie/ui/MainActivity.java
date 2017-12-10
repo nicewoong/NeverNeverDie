@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.nicewoong.neverneverdie.R;
-import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDataCreator;
+import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathAPIRequestTask;
+
+import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -38,10 +40,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.d(TAG_PROCEDURE_DEBUG,"Start of onCreate()");
 
-//        TrafficAccidentDeathDataCom trafficAccidentDeathDataCom = new TrafficAccidentDeathDataCom(getApplicationContext());
-//        trafficAccidentDeathDataCom.setTrafficAccidentDeathList(TRAFFIC_ACCIDENT_DEATH_API_KEY,"2014","2200","2204");
         // Button Register
-        registerButtons();
+        registerButtonsUI();
+
+
+        AccidentDeathAPIRequestTask requestTask = new AccidentDeathAPIRequestTask();
+        try {
+            requestTask.execute(requestTask.getRequestUrl("2014","1100", "1117"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -49,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *  find Button View by ID
      *  And Register Button onClickListener
      */
-    public void registerButtons() {
+    public void registerButtonsUI() {
         checkAroundMeButton = (Button)findViewById(R.id.button_check_around_me);
         checkAroundMeButton.setOnClickListener(this); // Register onClickListener
         alwaysSafeCheckingButton = (Button)findViewById(R.id.button_always_safe_checking);

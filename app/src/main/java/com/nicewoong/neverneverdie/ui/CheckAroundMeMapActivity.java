@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nicewoong.neverneverdie.MyApplication;
 import com.nicewoong.neverneverdie.R;
-import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDataCreator;
+import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentTestDataCreator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -126,14 +126,14 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
 
         /*2014 대구*/
-        addTestMarkerByJsonArray(map, AccidentDataCreator.getTestJsonDataList(AccidentDataCreator.Daegu_bukgu_data));
-        addTestMarkerByJsonArray(map, AccidentDataCreator.getTestJsonDataList(AccidentDataCreator.Daegu_Jungu_data));
-        addTestMarkerByJsonArray(map, AccidentDataCreator.getTestJsonDataList(AccidentDataCreator.Daegu_Dongu_data));
-        addTestMarkerByJsonArray(map, AccidentDataCreator.getTestJsonDataList(AccidentDataCreator.Daegu_Namgu_data));
-        addTestMarkerByJsonArray(map, AccidentDataCreator.getTestJsonDataList(AccidentDataCreator.Daegu_Seogu_data));
-        addTestMarkerByJsonArray(map, AccidentDataCreator.getTestJsonDataList(AccidentDataCreator.Daegu_Dalseogu_data));
-        addTestMarkerByJsonArray(map, AccidentDataCreator.getTestJsonDataList(AccidentDataCreator.Daegu_Suseonggu_data));
-        addTestMarkerByJsonArray(map, AccidentDataCreator.getTestJsonDataList(AccidentDataCreator.Daegu_Dalsung_data));
+        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_bukgu_data));
+        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Jungu_data));
+        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Dongu_data));
+        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Namgu_data));
+        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Seogu_data));
+        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Dalseogu_data));
+        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Suseonggu_data));
+        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Dalsung_data));
 
     }
 

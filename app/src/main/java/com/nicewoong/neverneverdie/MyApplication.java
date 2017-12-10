@@ -29,7 +29,7 @@ public class MyApplication extends Application {
     /**
      * onConfigurationChanged()
      * 컴포넌트가 실행되는 동안 단말의 화면이 바뀌면 시스템이 실행 한다.
-     */
+    */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
