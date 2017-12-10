@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         registerButtonsUI();// Button Register
 
-        //
+        // Publish updating AccidentDeathData through HTTP request
         try {
             publishAsyncRequestForAccidentDeathData();
         } catch (UnsupportedEncodingException e) {
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+
 
     /**
      *  find Button View by ID
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void publishAsyncRequestForAccidentDeathData() throws UnsupportedEncodingException, MalformedURLException {
-        AccidentDeathAPIRequestTask requestTask = new AccidentDeathAPIRequestTask();
+        AccidentDeathAPIRequestTask requestTask = new AccidentDeathAPIRequestTask(MainActivity.this);
         requestTask.execute();
 
     }

@@ -1,5 +1,7 @@
 package com.nicewoong.neverneverdie.trafficAccidentDeath;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -33,14 +35,34 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<Void, Void, JSONArray
     //공공데이터포털에서 발급받은 인증키
     // See : www.data.go.kr/
     private static String SERVICE_KEY = "PYWezzCNSGTHF5aJALsLoxzCziUi5d7B1jEPrU87TacdNZQoVimSQG%2FFBafP1RRBRZa1XVGX5babWe7wwSXr%2FQ%3D%3D";
+    private ProgressDialog progressDialog; // 진행상태를 표시해줄 프로그레스다이얼로그
+    private Context context;
 
+    /**
+     * constructor
+     */
+    public AccidentDeathAPIRequestTask (Context context) {
+        this.context = context;
+        progressDialog = new ProgressDialog(context); // progressDialog 인스턴스 생성
+    }
 
     /**
      * background 작업을 하기 전 준비작업을 여기에서 수행합니다.
      */
     @Override
     protected void onPreExecute() {
+        // progressbar 생성 및 show
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("데이터를 업데이트 합니다");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+
         super.onPreExecute();
+
+
+
+
     }
 
 
@@ -117,6 +139,7 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<Void, Void, JSONArray
         Log.d(MainActivity.TAG_REST_API_TEST, "onPostExecute 종료,  getAccidentDeathList().length = "
                 + MainActivity.accidentDeathData.getAccidentDeathList().length() + ", data = " + MainActivity.accidentDeathData.getAccidentDeathList()); //화면에 출력해봅시다
 
+        progressDialog.dismiss();
 
     }
 
