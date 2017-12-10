@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.nicewoong.neverneverdie.ui.MainActivity;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -27,7 +28,7 @@ import java.net.URLEncoder;
  * 특정 클래스에서 사용하기 위해 본 클래스에서 AsyncTask background 작업을 하지 않고,
  * getRequestUrl(), publishHttpRequest() 를 활용해서 필요한 부분에서 AsyncTask Anonymous class 를 구현해서 사용하는 것도 가능
  */
-public class AccidentDeathAPIRequestTask extends AsyncTask<URL, Void, JSONObject> {
+public class AccidentDeathAPIRequestTask extends AsyncTask<Void, Void, JSONArray> {
 
     //공공데이터포털에서 발급받은 인증키
     // See : www.data.go.kr/
@@ -51,21 +52,38 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<URL, Void, JSONObject
      * @return HTTP rqeust를 통해서 얻은 결과를 JSONObject 로 반환합니다
      */
     @Override
-    protected JSONObject doInBackground(URL... urls) {
+    protected JSONArray doInBackground(Void... urls) {
 
         Log.d(MainActivity.TAG_REST_API_TEST, "doInBackground 가 실행됩니다 " ); //화면에 출력해봅시다
-        String resultString = "";
+        JSONArray entireResultArray = new JSONArray();
+
+        String resultStringFor2012 = "";
+        String resultStringFor2013 = "";
+        String resultStringFor2014 = "";
+        String resultStringFor2015 = "";
+        String resultStringFor2016 = "";
 
         try {
-            resultString = publishHttpRequest(urls[0]);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            resultStringFor2012 = publishHttpRequest(getRequestUrl("2012","2200", ""));
+            resultStringFor2013 = publishHttpRequest(getRequestUrl("2013","2200", ""));
+            resultStringFor2014 = publishHttpRequest(getRequestUrl("2014","2200", ""));
+            resultStringFor2015 = publishHttpRequest(getRequestUrl("2015","2200", ""));
+            resultStringFor2016 = publishHttpRequest(getRequestUrl("2016","2200", ""));
 
-        Log.d(MainActivity.TAG_REST_API_TEST, "doInBackground resultString = " + resultString); //화면에 출력해봅시다
+            JSONObject resultObjectFor2012 = new JSONObject(resultStringFor2012);
+            JSONObject resultObjectFor2013 = new JSONObject(resultStringFor2013);
+            JSONObject resultObjectFor2014 = new JSONObject(resultStringFor2014);
+            JSONObject resultObjectFor2015 = new JSONObject(resultStringFor2015);
+            JSONObject resultObjectFor2016 = new JSONObject(resultStringFor2016);
 
-        try {
-            return new JSONObject(resultString);// 실제 리턴값으로 고쳐주자
+            entireResultArray.put(resultObjectFor2012);
+            entireResultArray.put(resultObjectFor2013);
+            entireResultArray.put(resultObjectFor2014);
+            entireResultArray.put(resultObjectFor2015);
+            entireResultArray.put(resultObjectFor2016);
+
+            return entireResultArray;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,24 +98,24 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<URL, Void, JSONObject
      * doInBackground 메서드가 return 하는 결과(JSONObject)를 매개변수로 받습니다.
      ** 주의 ** result 로 input 되는 JSONObject 가 null 이 아닌지 확인절차가 필요!
      *
-     * @param result doInBackground 메서드가 return 하는 결과(JSONObject)
+     * @param resultArray doInBackground 메서드가 return 하는 결과(JSONOArray)
      *
      */
     @Override
-    protected void onPostExecute(JSONObject result) {
-        super.onPostExecute(result);
+    protected void onPostExecute(JSONArray resultArray) {
+        super.onPostExecute(resultArray);
 
         Log.d(MainActivity.TAG_REST_API_TEST, "onPostExecute 시작작, result = "
-                + result); //화면에 출력해봅시다
+                + resultArray); //화면에 출력해봅시다
 
-        if(result != null) {
-            MainActivity.accidentDeathData = new AccidentDeathData(result); // HTTP request 로 얻은 결과를 글로벌 변수에 저장해줍니다.
+        if(resultArray != null) {
+            MainActivity.accidentDeathData = new AccidentDeathData(resultArray); // HTTP request 로 얻은 결과를 글로벌 변수에 저장해줍니다.
         }else {
             MainActivity.accidentDeathData = new AccidentDeathData();
         }
 
         Log.d(MainActivity.TAG_REST_API_TEST, "onPostExecute 종료,  getAccidentDeathList().length = "
-                + MainActivity.accidentDeathData.getAccidentDeathList().length()); //화면에 출력해봅시다
+                + MainActivity.accidentDeathData.getAccidentDeathList().length() + ", data = " + MainActivity.accidentDeathData.getAccidentDeathList()); //화면에 출력해봅시다
 
 
     }

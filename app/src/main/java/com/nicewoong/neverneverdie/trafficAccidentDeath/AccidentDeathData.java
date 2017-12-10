@@ -16,25 +16,18 @@ import org.json.JSONObject;
 public class AccidentDeathData {
 
 
-    private JSONObject entireObject ;
+    private JSONArray entireObjectArray;
     private JSONArray accidentDeathList; // 전체 request result JSON object 에서 실제 accidentDeath 데이터가 포함된 array 부분을 뽑아서 저장
 
     /**
      * 생성자 constructor
      *
-     * @param entireResultObject
+     * @param entireResultArray
      */
-    public AccidentDeathData(JSONObject entireResultObject) {
-        try {
-            this.entireObject =  new JSONObject(entireResultObject.getString("searchResult"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            this.entireObject =  new JSONObject();
-        }
+    public AccidentDeathData(JSONArray entireResultArray) {
+        this.entireObjectArray =  entireResultArray;
 
         addAccidentDeathListFromEntireObject();
-
-        Log.d(MainActivity.TAG_PROCEDURE_DEBUG, "AccidentDeathData Constructor 완료, accidentDeathList = " + accidentDeathList.toString() ); //화면에 출력해봅시다
 
     }
 
@@ -43,7 +36,7 @@ public class AccidentDeathData {
      *
      */
     public AccidentDeathData() {
-        this.entireObject = new JSONObject();
+        this.entireObjectArray = new JSONArray();
         addAccidentDeathListFromEntireObject();
     }
 
@@ -53,25 +46,38 @@ public class AccidentDeathData {
      */
     private void addAccidentDeathListFromEntireObject() {
         JSONArray addedAccidentDeathArray ;
-        try {
-            addedAccidentDeathArray = new JSONArray(entireObject.getString("accidentDeath"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            addedAccidentDeathArray = new JSONArray();
+        JSONObject searchResultObject;
+
+        if(entireObjectArray ==null) {
+            entireObjectArray = new JSONArray();
+            accidentDeathList = new JSONArray();
+            return;
         }
 
-        if(this.accidentDeathList != null) { // 이미 존재하는 것이 있으면 새로 얻은 reuslt 를 추가해줍니다
-            for(int i = 0 ; i<addedAccidentDeathArray.length(); i++) {
-                try {
-                    this.accidentDeathList.put(addedAccidentDeathArray.get(i));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
+        try {
+
+            for(int i = 0 ; i<entireObjectArray.length() ; i++){
+                    searchResultObject = entireObjectArray.getJSONObject(i).getJSONObject("searchResult");
+                    addedAccidentDeathArray = searchResultObject.getJSONArray("accidentDeath");
+
+                    if(this.accidentDeathList != null) { // 이미 존재하는 것이 있으면 새로 얻은 reuslt 를 추가해줍니다
+                        for (int j = 0; j < addedAccidentDeathArray.length(); j++) {
+                            this.accidentDeathList.put(addedAccidentDeathArray.get(i));
+                        }
+                    }else {
+                        this.accidentDeathList = addedAccidentDeathArray;
+                    }
             }
-        }else {
-            this.accidentDeathList = addedAccidentDeathArray;
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            accidentDeathList = new JSONArray();
         }
-    }
+
+    }// end of addAccidentDeathListFromEntireObject();
+
 
     /**
      * private 으로 선언되어 값을 저장하고 있는 getAccidentDeathList 를 반환
@@ -85,11 +91,11 @@ public class AccidentDeathData {
 
 
 
-}
+}// end of class
 
 
 
-/* 아래와 같은 형식을 구성하고 있습니다
+/* entireObject 하나 당 아래와 같은 형식을 구성하고 있습니다
 {
     "searchResult":{
         "accidentDeath":[

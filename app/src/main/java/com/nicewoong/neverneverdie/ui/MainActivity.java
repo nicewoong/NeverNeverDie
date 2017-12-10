@@ -12,6 +12,7 @@ import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathAPIRequestT
 import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathData;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -41,26 +42,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.d(TAG_PROCEDURE_DEBUG,"Start of onCreate()");
 
-        // Button Register
-        registerButtonsUI();
 
+        registerButtonsUI();// Button Register
 
-        AccidentDeathAPIRequestTask requestTask = new AccidentDeathAPIRequestTask();
+        //
         try {
-            requestTask.execute(requestTask.getRequestUrl("2015","2200", ""));
+            publishAsyncRequestForAccidentDeathData();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        AccidentDeathAPIRequestTask requestTask2 = new AccidentDeathAPIRequestTask();
-        try {
-            requestTask2.execute(requestTask2.getRequestUrl("2014","2200", ""));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
@@ -85,6 +75,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void openCheckAroundMeMapActivity() {
         Intent intent = new Intent(this, CheckAroundMeMapActivity.class);
         startActivity(intent);
+    }
+
+    public void publishAsyncRequestForAccidentDeathData() throws UnsupportedEncodingException, MalformedURLException {
+        AccidentDeathAPIRequestTask requestTask = new AccidentDeathAPIRequestTask();
+        requestTask.execute();
+
     }
 
     /**
@@ -121,8 +117,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             default:
 
-        }
-    }
+        }// end of switch
+
+
+    }// end of onClick()
+
 
 
 
