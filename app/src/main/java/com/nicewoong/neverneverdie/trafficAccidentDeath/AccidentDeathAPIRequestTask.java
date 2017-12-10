@@ -35,6 +35,8 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<Void, Void, JSONArray
     //공공데이터포털에서 발급받은 인증키
     // See : www.data.go.kr/
     private static String SERVICE_KEY = "PYWezzCNSGTHF5aJALsLoxzCziUi5d7B1jEPrU87TacdNZQoVimSQG%2FFBafP1RRBRZa1XVGX5babWe7wwSXr%2FQ%3D%3D";
+
+    // TODO: 2017. 12. 10. Consider changing to Custom Dialog because ProgressDialog is deprecated from API level 26 (wjhan)
     private ProgressDialog progressDialog; // 진행상태를 표시해줄 프로그레스다이얼로그
     private Context context;
 
