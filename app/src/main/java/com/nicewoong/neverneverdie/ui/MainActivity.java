@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.nicewoong.neverneverdie.R;
 import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathAPIRequestTask;
 import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathData;
+import com.nicewoong.neverneverdie.ui.uiMap.CheckAroundMeMapActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;

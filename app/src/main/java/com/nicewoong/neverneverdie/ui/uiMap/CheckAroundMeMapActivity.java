@@ -1,7 +1,10 @@
-package com.nicewoong.neverneverdie.ui;
+package com.nicewoong.neverneverdie.ui.uiMap;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -20,9 +23,10 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.nicewoong.neverneverdie.MyApplication;
 import com.nicewoong.neverneverdie.R;
-import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentTestDataCreator;
+import com.nicewoong.neverneverdie.ui.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,14 +34,18 @@ import org.json.JSONObject;
 
 import static com.nicewoong.neverneverdie.ui.MainActivity.TAG_PROCEDURE_DEBUG;
 
-public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapReadyCallback, ClusterManager.OnClusterItemClickListener<AccidentDeathClusterItem>,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
 
     public MapFragment mapFragment;
     public Location mLastLocation;
     public static double DEFAULT_LATITUDE = 35.8900521;
     public static double DEFAULT_LONGITUDE = 128.6113282;
+
+    ClusterManager<AccidentDeathClusterItem> mClusterManager; //Clustering Item 을 위한 매니저 객체
+    LocationManager locationManager; // 현재 단말기 위치를 관리하기 위한 매니저 객체
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,13 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
         //set mGoogleApiClient
         setGoogleApiClient();
+
+        //init locationManager instance
+        // TODO: 2017. 12. 11. consider Adding permission check
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
 
     }
 
@@ -92,6 +107,9 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
     public void onMapReady(GoogleMap map) {
         Log.d(TAG_PROCEDURE_DEBUG, "맵이 준비되었습니다 ~!");
 
+        setUpClusterManager(map); //Marker 를 cluster item 으로 표시하기 위한 ClusterManager 클래스를 생성하고 리스너를 등록하는 등의 초기화 작업
+
+
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE), 15));
 
         // 현재위치 중심 마커를 설정합니다.
@@ -112,7 +130,8 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
 
         // AccidentDeath data 를 저장하고 있는 배열을 통해서 각각의 element에 대하여 maker로 지도위에 표시합니다
-        addMarkerByAccidentDeathArray(map, MainActivity.accidentDeathData.getAccidentDeathList());
+//        addMarkerByAccidentDeathArray(map, MainActivity.accidentDeathData.getAccidentDeathList());
+        addClusterMarkerByAccidentDeathArray(map, MainActivity.accidentDeathData.getAccidentDeathList());
 
 //        //Alert dialog 띄우기  -> 그냥 바로 띄우기. 보여주기용
 //        NeverDieDialog alertDialog = new NeverDieDialog(this);
@@ -121,19 +140,33 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
     }// end of onMapReady()
 
 
-
+    /**
+     * Marker 를 cluster item 으로 표시하기 위한 ClusterManager 클래스를 생성하고 리스너를 등록하는 등의 초기화 작업
+     * @param googleMap
+     */
+    public void setUpClusterManager(GoogleMap googleMap) {
+        mClusterManager = new ClusterManager<>(this, googleMap);
+        mClusterManager.setOnClusterItemClickListener(this);
+        googleMap.setOnCameraIdleListener(mClusterManager);
+        googleMap.setOnMarkerClickListener(mClusterManager);
+    }
 
     /**
-     * Json Array에 있는 데이터를 선별적으로 뽑아 map에 표현합니다
+     * Json Array 에 있는 데이터를 선별적으로 뽑아 map 에 개별 Marker 를 추가하여 표현합니다
      * @param map
-     * @param testArrayList
+     * @param accidentDeathList
      */
-    public void addMarkerByAccidentDeathArray(GoogleMap map, JSONArray testArrayList) {
+    public void addMarkerByAccidentDeathArray(GoogleMap map, JSONArray accidentDeathList) {
+        Log.d(TAG_PROCEDURE_DEBUG, "accidentDeathList.length() = " + accidentDeathList.length() );
 
 
-        for(int i = 0; i<testArrayList.length() ; i++) {
+
+        for(int i = 0; i < accidentDeathList.length() ; i++) {
             try {
-                JSONObject currentAccidentJsonObject = testArrayList.getJSONObject(i);
+                JSONObject currentAccidentJsonObject = accidentDeathList.getJSONObject(i);
+
+                Log.d(TAG_PROCEDURE_DEBUG, "currentAccidentJsonObject_ "+i+" = " + currentAccidentJsonObject.toString() );
+
 
                 map.addMarker(new MarkerOptions()
                         .position(new LatLng(Double.parseDouble((currentAccidentJsonObject.getString("grd_la"))), Double.parseDouble(currentAccidentJsonObject.getString("grd_lo"))))
@@ -146,6 +179,32 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
 
         }
+    }
+
+
+    /**
+     * Json Array 에 있는 데이터를 하나씩 뽑아 map 에 ClusterMarker 로 추가하여 표현합니다 (클러스터링이 적용됨)
+     * @param map
+     * @param accidentDeathList
+     */
+    public void addClusterMarkerByAccidentDeathArray(GoogleMap map, JSONArray accidentDeathList) {
+        Log.d(TAG_PROCEDURE_DEBUG, "addClusterMarkerByAccidentDeathArray.length() = " + accidentDeathList.length() );
+
+
+
+        for(int i = 0; i < accidentDeathList.length() ; i++) {
+            try {
+                JSONObject currentAccidentJsonObject = accidentDeathList.getJSONObject(i);
+                AccidentDeathClusterItem clusterItem = new AccidentDeathClusterItem(currentAccidentJsonObject);
+                mClusterManager.addItem(clusterItem);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
     }
 
 
@@ -170,9 +229,11 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(MyApplication.mGoogleApiClient);
         if (mLastLocation != null) {
             Log.d(TAG_PROCEDURE_DEBUG, "새로 파악한 latitude = " + String.valueOf(mLastLocation.getLatitude()));
-            Log.d(TAG_PROCEDURE_DEBUG, "새로 파악한 latitude = " + String.valueOf(mLastLocation.getLongitude()));
+            Log.d(TAG_PROCEDURE_DEBUG, "새로 파악한 Longitude = " + String.valueOf(mLastLocation.getLongitude()));
         }
     }
+
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -182,5 +243,37 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG_PROCEDURE_DEBUG, "onConnectionFailed : " + connectionResult);
+    }
+
+    // Cluster Item 하나가 클릭되었을 때 호출되는 리스너
+    @Override
+    public boolean onClusterItemClick(AccidentDeathClusterItem accidentDeathClusterItem) {
+        Log.d(TAG_PROCEDURE_DEBUG, "onClusterItemClick is invoked. " );
+
+
+        return false;
+    }
+
+    // location 이 변경될 때마다 호출되는 콜백
+    @Override
+    public void onLocationChanged(Location location) {
+        double lat = location.getLatitude();
+        double lng = location.getLongitude();
+        Log.d(TAG_PROCEDURE_DEBUG,  "onLocationChanged() = (" + lat + ",  " + lng  + ")");
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }

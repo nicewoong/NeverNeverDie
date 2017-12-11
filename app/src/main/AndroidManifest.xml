@@ -32,7 +32,7 @@
         </activity>
 
         <!--<CheckAroundMeMapActivity using googleMapApi>-->
-        <activity android:name=".ui.CheckAroundMeMapActivity"></activity>
+        <activity android:name=".ui.uiMap.CheckAroundMeMapActivity"></activity>
 
 
         <!--meta datas to use GoogleMapApi -->
