@@ -110,39 +110,25 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
         //옵션을 활용해 써클을 추가합니다
         Circle circle = map.addCircle(circleOptions); // return 되는 circle 은 나중에 변경가능 (Mutable)
 
-        addDangerousLocationMarker(map); // <= test data set (2014 daegu)
 
-        //Alert dialog 띄우기  -> 그냥 바로 띄우기. 보여주기용
-        NeverDieDialog alertDialog = new NeverDieDialog(this);
-        alertDialog.showDangerousAlertDialog();
+        // AccidentDeath data 를 저장하고 있는 배열을 통해서 각각의 element에 대하여 maker로 지도위에 표시합니다
+        addMarkerByAccidentDeathArray(map, MainActivity.accidentDeathData.getAccidentDeathList());
 
-    }
+//        //Alert dialog 띄우기  -> 그냥 바로 띄우기. 보여주기용
+//        NeverDieDialog alertDialog = new NeverDieDialog(this);
+//        alertDialog.showDangerousAlertDialog();
 
-    /**
-     * create Test data!! ( 대구광역시 중구 )
-     * @param map
-     */
-    public void addDangerousLocationMarker(GoogleMap map) {
+    }// end of onMapReady()
 
 
-        /*2014 대구*/
-        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_bukgu_data));
-        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Jungu_data));
-        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Dongu_data));
-        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Namgu_data));
-        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Seogu_data));
-        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Dalseogu_data));
-        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Suseonggu_data));
-        addTestMarkerByJsonArray(map, AccidentTestDataCreator.getTestJsonDataList(AccidentTestDataCreator.Daegu_Dalsung_data));
 
-    }
 
     /**
      * Json Array에 있는 데이터를 선별적으로 뽑아 map에 표현합니다
      * @param map
      * @param testArrayList
      */
-    public void addTestMarkerByJsonArray(GoogleMap map, JSONArray testArrayList) {
+    public void addMarkerByAccidentDeathArray(GoogleMap map, JSONArray testArrayList) {
 
 
         for(int i = 0; i<testArrayList.length() ; i++) {
