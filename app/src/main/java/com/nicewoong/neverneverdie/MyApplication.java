@@ -12,7 +12,8 @@ import com.google.android.gms.location.LocationServices;
 
 public class MyApplication extends Application {
 
-
+    public static double CURRENT_LATITUDE = 35.8900521;
+    public static double CURRENT_LONGITUDE = 128.6113282;
     public static GoogleApiClient mGoogleApiClient;
 
     /** onCreate()

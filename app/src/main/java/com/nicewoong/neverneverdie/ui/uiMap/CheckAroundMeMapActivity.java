@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.nicewoong.neverneverdie.MyApplication;
@@ -46,6 +47,9 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
     ClusterManager<AccidentDeathClusterItem> mClusterManager; //Clustering Item 을 위한 매니저 객체
     LocationManager locationManager; // 현재 단말기 위치를 관리하기 위한 매니저 객체
 
+    Circle currentCircle; // 현재 단말기 위치 중심을 가리키는 Circle Overlay 객체 다룰 글로벌 변수
+    Marker currentMarker; // 현재 단말기 위치 중심을 가리키는 Marker 객체 다룰 글로벌 변수
+    GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +109,7 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
      */
     @Override
     public void onMapReady(GoogleMap map) {
+        googleMap = map;
         Log.d(TAG_PROCEDURE_DEBUG, "맵이 준비되었습니다 ~!");
 
         setUpClusterManager(map); //Marker 를 cluster item 으로 표시하기 위한 ClusterManager 클래스를 생성하고 리스너를 등록하는 등의 초기화 작업
@@ -112,25 +117,10 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE), 15));
 
-        // 현재위치 중심 마커를 설정합니다.
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE))
-                .title("Current Location"));
 
-        // 100m 주변으로 원을그려줍니다
-        // 우선 서클옵션을 만들고
-        CircleOptions circleOptions = new CircleOptions()
-                .center(new LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE))
-                .radius(500)
-                .strokeWidth(0)
-                .fillColor(Color.argb(50, 255, 0, 0));
-
-        //옵션을 활용해 써클을 추가합니다
-        Circle circle = map.addCircle(circleOptions); // return 되는 circle 은 나중에 변경가능 (Mutable)
-
+        setCurrentLocationMarker(map, new LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE));
 
         // AccidentDeath data 를 저장하고 있는 배열을 통해서 각각의 element에 대하여 maker로 지도위에 표시합니다
-//        addMarkerByAccidentDeathArray(map, MainActivity.accidentDeathData.getAccidentDeathList());
         addClusterMarkerByAccidentDeathArray(map, MainActivity.accidentDeathData.getAccidentDeathList());
 
 //        //Alert dialog 띄우기  -> 그냥 바로 띄우기. 보여주기용
@@ -140,6 +130,33 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
     }// end of onMapReady()
 
 
+    public void setCurrentLocationMarker(GoogleMap map, LatLng currentLatLng) {
+        if(currentCircle == null || currentMarker == null) {
+            // 현재위치 중심 마커를 설정합니다. return 되는 marker 는 나중에 변경가능
+            currentMarker = map.addMarker(new MarkerOptions()
+                    .position(currentLatLng)
+                    .title("Current Location"));
+
+            // 100m 주변으로 원을그려줍니다
+            // 우선 서클옵션을 만들고
+            CircleOptions circleOptions = new CircleOptions()
+                    .center(currentLatLng)
+                    .radius(500)
+                    .strokeWidth(0)
+                    .fillColor(Color.argb(50, 255, 0, 0));
+
+            //옵션을 활용해 써클을 추가합니다
+            currentCircle = map.addCircle(circleOptions); // return 되는 currentCircle 은 나중에 변경가능 (Mutable)
+        }else {
+            currentMarker.setPosition(currentLatLng);
+            currentCircle.setCenter(currentLatLng);
+
+        }
+
+
+
+    }
+
     /**
      * Marker 를 cluster item 으로 표시하기 위한 ClusterManager 클래스를 생성하고 리스너를 등록하는 등의 초기화 작업
      * @param googleMap
@@ -147,6 +164,7 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
     public void setUpClusterManager(GoogleMap googleMap) {
         mClusterManager = new ClusterManager<>(this, googleMap);
         mClusterManager.setOnClusterItemClickListener(this);
+        mClusterManager.setRenderer(new AccidentDeathClusterRenderer(this, googleMap,mClusterManager)); // cluster marker 가 그려지는 모습을 설정합니다
         googleMap.setOnCameraIdleListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mClusterManager);
     }
@@ -214,6 +232,8 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
      */
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.d(TAG_PROCEDURE_DEBUG, "onConnected : " );
+
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //            // TODO: Consider calling
 //            //    ActivityCompat#requestPermissions
@@ -260,6 +280,9 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
         double lat = location.getLatitude();
         double lng = location.getLongitude();
         Log.d(TAG_PROCEDURE_DEBUG,  "onLocationChanged() = (" + lat + ",  " + lng  + ")");
+
+        if(googleMap!=null)
+            setCurrentLocationMarker(googleMap, new LatLng(lat,lng)); // 지도상 현재 위치 갱신
     }
 
     @Override
