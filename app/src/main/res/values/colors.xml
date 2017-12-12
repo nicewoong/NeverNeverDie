@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#C2185B</color>
+    <color name="colorPrimaryDark">#E91E63</color>
     <color name="colorAccent">#FF4081</color>
 
     <!--Button Colors-->
     <color name="colorButtonAlwaysSafeOn">#00FA9A</color>
-    <color name="colorButtonAlwaysSafeOFF">#778899</color>
+    <color name="colorButtonAlwaysSafeOff">#778899</color>
     <color name="colorButtonCheckAroundMe">#DB7093</color>
 
 
