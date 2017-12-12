@@ -84,6 +84,9 @@ public class AccidentDeathData {
      * @return accidentDeathList JSONArray
      */
     public JSONArray getAccidentDeathList() {
+        if (accidentDeathList == null) {
+            accidentDeathList = new JSONArray();
+        }
         return accidentDeathList;
     }
 

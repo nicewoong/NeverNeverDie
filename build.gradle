@@ -15,6 +15,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url "https://jitpack.io" } // Material Dialog (see: https://github.com/javiersantos/MaterialStyledDialogs)
     }
 }
 
