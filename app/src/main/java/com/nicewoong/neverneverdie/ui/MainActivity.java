@@ -1,6 +1,7 @@
 package com.nicewoong.neverneverdie.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.nicewoong.neverneverdie.R;
+import com.nicewoong.neverneverdie.application.MySharedPreference;
 import com.nicewoong.neverneverdie.backgroundService.AlwaysSafeService;
 import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathAPIRequestTask;
 import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathData;
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public static AccidentDeathData accidentDeathData; // HTTP request 를 통해 얻은 교통사망정보 전체 데이터 셋 (AccidentDeathAPIRequestTask 의 수행결과로 데이터 저장)
 
+    /*
+    shared preferences
+     */
+    public MySharedPreference sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.d(TAG_PROCEDURE_DEBUG,"Start of onCreate()");
 
-
+        sharedPreferences = MySharedPreference.getInstance(getApplicationContext());
         registerButtonsUI();// Button Register
 
         // Publish updating AccidentDeathData through HTTP request
@@ -105,15 +111,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.button_always_safe_checking:
-                if(alwaysSafeCheckingButtonFlag==true) { // 백그라운드 서비스 스위치 OFF
+
+                if(sharedPreferences.getAlwaysSafeSwitch()) { // 백그라운드 서비스 스위치 ON->OFF
                     alwaysSafeCheckingButton.setText("Always-Safe OFF");
                     alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOFF));
 
                     Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
                     stopService(intent); // 서비스 종료
 
-                    alwaysSafeCheckingButtonFlag = false;
-                }else { // 백그라운드 서비스 스위치 On
+                    sharedPreferences.setAlwaysSafeSwitch(false); // 스위치 설정을 off 로 저장
+
+                }else { // 백그라운드 서비스 스위치 On -> OFF
                     alwaysSafeCheckingButton.setText("Always-Safe ON");
                     alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOn));
                     //dialog로 확인하기
@@ -123,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
                     startService(intent); // 서비스 시작
 
-                    alwaysSafeCheckingButtonFlag = true;
+                    sharedPreferences.setAlwaysSafeSwitch(false); // 스위치 설정을 on 으로 저장
                 }
                 break;
 
@@ -135,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }// end of onClick()
 
 
+    public
 
 
 }// end of class
