@@ -1,4 +1,4 @@
-package com.nicewoong.neverneverdie;
+package com.nicewoong.neverneverdie.application;
 
 import android.app.Application;
 import android.content.res.Configuration;
@@ -14,6 +14,10 @@ public class MyApplication extends Application {
 
     public static double CURRENT_LATITUDE = 35.8900521;
     public static double CURRENT_LONGITUDE = 128.6113282;
+
+    public static double DEFAULT_LATITUDE = 35.8900521;
+    public static double DEFAULT_LONGITUDE = 128.6113282;
+
     public static GoogleApiClient mGoogleApiClient;
 
     /** onCreate()

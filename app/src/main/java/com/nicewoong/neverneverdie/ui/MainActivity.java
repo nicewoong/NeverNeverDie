@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.nicewoong.neverneverdie.R;
+import com.nicewoong.neverneverdie.backgroundService.AlwaysSafeService;
 import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathAPIRequestTask;
 import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathData;
 import com.nicewoong.neverneverdie.ui.uiMap.CheckAroundMeMapActivity;
+import com.nicewoong.neverneverdie.ui.util.NeverDieDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -103,17 +105,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.button_always_safe_checking:
-                if(alwaysSafeCheckingButtonFlag==true) {
+                if(alwaysSafeCheckingButtonFlag==true) { // 백그라운드 서비스 스위치 OFF
                     alwaysSafeCheckingButton.setText("Always-Safe OFF");
                     alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOFF));
 
+                    Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
+                    stopService(intent); // 서비스 종료
+
                     alwaysSafeCheckingButtonFlag = false;
-                }else {
+                }else { // 백그라운드 서비스 스위치 On
                     alwaysSafeCheckingButton.setText("Always-Safe ON");
                     alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOn));
                     //dialog로 확인하기
                     NeverDieDialog confirmDialog = new NeverDieDialog(this);
                     confirmDialog.showAlwaysSafeOnDialog();
+
+                    Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
+                    startService(intent); // 서비스 시작
+
                     alwaysSafeCheckingButtonFlag = true;
                 }
                 break;

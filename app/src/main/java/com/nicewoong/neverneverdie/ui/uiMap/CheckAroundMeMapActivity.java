@@ -25,7 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
-import com.nicewoong.neverneverdie.MyApplication;
+import com.nicewoong.neverneverdie.application.MyApplication;
 import com.nicewoong.neverneverdie.R;
 import com.nicewoong.neverneverdie.ui.MainActivity;
 
@@ -33,6 +33,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.nicewoong.neverneverdie.application.MyApplication.CURRENT_LATITUDE;
+import static com.nicewoong.neverneverdie.application.MyApplication.CURRENT_LONGITUDE;
+import static com.nicewoong.neverneverdie.application.MyApplication.DEFAULT_LATITUDE;
+import static com.nicewoong.neverneverdie.application.MyApplication.DEFAULT_LONGITUDE;
 import static com.nicewoong.neverneverdie.ui.MainActivity.TAG_PROCEDURE_DEBUG;
 
 public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapReadyCallback, ClusterManager.OnClusterItemClickListener<AccidentDeathClusterItem>,
@@ -41,15 +45,13 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
     public MapFragment mapFragment;
     public Location mLastLocation;
-    public static double DEFAULT_LATITUDE = 35.8900521;
-    public static double DEFAULT_LONGITUDE = 128.6113282;
 
     ClusterManager<AccidentDeathClusterItem> mClusterManager; //Clustering Item 을 위한 매니저 객체
     LocationManager locationManager; // 현재 단말기 위치를 관리하기 위한 매니저 객체
 
     Circle currentCircle; // 현재 단말기 위치 중심을 가리키는 Circle Overlay 객체 다룰 글로벌 변수
     Marker currentMarker; // 현재 단말기 위치 중심을 가리키는 Marker 객체 다룰 글로벌 변수
-    GoogleMap googleMap;
+    GoogleMap googleMap; // google map 객체가 생성되면 가리키고 있는다 global variable(여러 메서드 및 상황에서 컨트롤하기 위함)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,13 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
         //set mGoogleApiClient
         setGoogleApiClient();
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         //init locationManager instance
         // TODO: 2017. 12. 11. consider Adding permission check
@@ -98,8 +107,11 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
     protected void onStop() {
         MyApplication.mGoogleApiClient.disconnect();
+        // TODO: 2017. 12. 11. Consider Permission Check
+        locationManager.removeUpdates(this); // location 계속 변하도록 설정해놓은 update 를 종료합니다
         super.onStop();
     }
+
 
 
     /**
@@ -114,16 +126,12 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
         setUpClusterManager(map); //Marker 를 cluster item 으로 표시하기 위한 ClusterManager 클래스를 생성하고 리스너를 등록하는 등의 초기화 작업
 
-
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE), 15));
-
-
-        setCurrentLocationMarker(map, new LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE));
+        setCurrentLocationMarker(map, new LatLng(CURRENT_LATITUDE, CURRENT_LONGITUDE));
 
         // AccidentDeath data 를 저장하고 있는 배열을 통해서 각각의 element에 대하여 maker로 지도위에 표시합니다
         addClusterMarkerByAccidentDeathArray(map, MainActivity.accidentDeathData.getAccidentDeathList());
 
-//        //Alert dialog 띄우기  -> 그냥 바로 띄우기. 보여주기용
+//        //Alert dialog 띄우기  -> 그냥 바로 띄우기. 시범 보여주기용
 //        NeverDieDialog alertDialog = new NeverDieDialog(this);
 //        alertDialog.showDangerousAlertDialog();
 
@@ -147,6 +155,8 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
             //옵션을 활용해 써클을 추가합니다
             currentCircle = map.addCircle(circleOptions); // return 되는 currentCircle 은 나중에 변경가능 (Mutable)
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15)); // 해당 위치로 카메라 이동
+
         }else {
             currentMarker.setPosition(currentLatLng);
             currentCircle.setCenter(currentLatLng);
@@ -154,8 +164,9 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
         }
 
 
+    }// end of setCurrentLocationMarker()
 
-    }
+
 
     /**
      * Marker 를 cluster item 으로 표시하기 위한 ClusterManager 클래스를 생성하고 리스너를 등록하는 등의 초기화 작업
@@ -177,8 +188,6 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
     public void addMarkerByAccidentDeathArray(GoogleMap map, JSONArray accidentDeathList) {
         Log.d(TAG_PROCEDURE_DEBUG, "accidentDeathList.length() = " + accidentDeathList.length() );
 
-
-
         for(int i = 0; i < accidentDeathList.length() ; i++) {
             try {
                 JSONObject currentAccidentJsonObject = accidentDeathList.getJSONObject(i);
@@ -188,7 +197,7 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
 
                 map.addMarker(new MarkerOptions()
                         .position(new LatLng(Double.parseDouble((currentAccidentJsonObject.getString("grd_la"))), Double.parseDouble(currentAccidentJsonObject.getString("grd_lo"))))
-                        .title("사망사고발생지")
+                        .title("Death Accident Occurred")
                         .snippet("year : "+ currentAccidentJsonObject.getString("year")+ ", Death : "+ currentAccidentJsonObject.getString("no_010") + " , injured : " + currentAccidentJsonObject.getString("injpsn_co"))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.skull_icon)));
             } catch (JSONException e) {
@@ -208,8 +217,6 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
     public void addClusterMarkerByAccidentDeathArray(GoogleMap map, JSONArray accidentDeathList) {
         Log.d(TAG_PROCEDURE_DEBUG, "addClusterMarkerByAccidentDeathArray.length() = " + accidentDeathList.length() );
 
-
-
         for(int i = 0; i < accidentDeathList.length() ; i++) {
             try {
                 JSONObject currentAccidentJsonObject = accidentDeathList.getJSONObject(i);
@@ -219,11 +226,9 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
         }
 
-    }
+    } // end of addClusterMarkerByAccidentDeathArray()
 
 
     /**

@@ -34,6 +34,11 @@
         <!--<CheckAroundMeMapActivity using googleMapApi>-->
         <activity android:name=".ui.uiMap.CheckAroundMeMapActivity"></activity>
 
+        <!-- Background Service -->
+        <service android:name=".backgroundService.AlwaysSafeService"></service>
+
+
+
 
         <!--meta datas to use GoogleMapApi -->
         <meta-data
