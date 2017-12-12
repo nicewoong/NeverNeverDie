@@ -112,27 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.button_always_safe_checking:
 
-                if(sharedPreferences.getAlwaysSafeSwitch()) { // 백그라운드 서비스 스위치 ON->OFF
-                    alwaysSafeCheckingButton.setText("Always-Safe OFF");
-                    alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOFF));
+                operateAlwaysSafeCheckingButton();
 
-                    Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
-                    stopService(intent); // 서비스 종료
-
-                    sharedPreferences.setAlwaysSafeSwitch(false); // 스위치 설정을 off 로 저장
-
-                }else { // 백그라운드 서비스 스위치 On -> OFF
-                    alwaysSafeCheckingButton.setText("Always-Safe ON");
-                    alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOn));
-                    //dialog로 확인하기
-                    NeverDieDialog confirmDialog = new NeverDieDialog(this);
-                    confirmDialog.showAlwaysSafeOnDialog();
-
-                    Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
-                    startService(intent); // 서비스 시작
-
-                    sharedPreferences.setAlwaysSafeSwitch(false); // 스위치 설정을 on 으로 저장
-                }
                 break;
 
             default:
@@ -143,7 +124,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }// end of onClick()
 
 
-    public
+    /**
+     * Always-Safe on off 버튼을 클릭했을 때 작업을 수행하는 메서드
+     * 버튼이 on 되면 백그라운드 서비스 AlwaysSafeService 를 실행합니다
+     */
+    public void operateAlwaysSafeCheckingButton() {
+        if(sharedPreferences.getAlwaysSafeSwitch()) { // 백그라운드 서비스 스위치 ON->OFF
+            alwaysSafeCheckingButton.setText("Always-Safe OFF");
+            alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOFF));
+
+            Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
+            stopService(intent); // 서비스 종료
+
+            sharedPreferences.setAlwaysSafeSwitch(false); // 스위치 설정을 off 로 저장
+
+        }else { // 백그라운드 서비스 스위치 On -> OFF
+            alwaysSafeCheckingButton.setText("Always-Safe ON");
+            alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOn));
+            //dialog로 확인하기
+            NeverDieDialog confirmDialog = new NeverDieDialog(this);
+            confirmDialog.showAlwaysSafeOnDialog();
+
+            Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
+            startService(intent); // 서비스 시작
+
+            sharedPreferences.setAlwaysSafeSwitch(false); // 스위치 설정을 on 으로 저장
+        }
+    }
 
 
 }// end of class
