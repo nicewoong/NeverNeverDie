@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void publishAsyncRequestForAccidentDeathData() throws UnsupportedEncodingException, MalformedURLException {
-        if(accidentDeathData != null) // 이미 데이터가 있으면 수행하지 않고 메서드를 종료합니다
+        if(accidentDeathData != null && accidentDeathData.getAccidentDeathList() != null && accidentDeathData.getAccidentDeathList().length()>0) // 이미 데이터가 있으면 수행하지 않고 메서드를 종료합니다
             return;
 
         AccidentDeathAPIRequestTask requestTask = new AccidentDeathAPIRequestTask(MainActivity.this);
