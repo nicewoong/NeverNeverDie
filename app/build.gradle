@@ -48,4 +48,8 @@ dependencies {
     // ripple background (백그라운드 퍼지는 애니메이션 )
     compile 'com.skyfishjy.ripplebackground:library:1.0.1'
 
+    //Android-Bootstrap library
+    compile 'com.beardedhen:androidbootstrap:2.3.2'
+
+
 }

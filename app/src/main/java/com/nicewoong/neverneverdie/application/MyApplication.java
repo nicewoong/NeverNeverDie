@@ -3,6 +3,7 @@ package com.nicewoong.neverneverdie.application;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
@@ -29,6 +30,12 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         // Create an instance of GoogleAPIClient.
+
+
+        // setup bootstrap lib
+        TypefaceProvider.registerDefaultIconSets();
+
+
     }
 
     /**
