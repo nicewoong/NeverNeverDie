@@ -205,6 +205,7 @@ public class AccidentDeathAPIRequestTask extends AsyncTask<Void, Void, JSONArray
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552061/trafficAccidentDeath/getRestTrafficAccidentDeath"); /*URL*/
 
         /*Service Key*/
+
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + SERVICE_KEY);
         /*년도 코드종류 코드값 14년도 2014 13년도 2013 12년도 2012 */
         urlBuilder.append("&" + URLEncoder.encode("searchYear","UTF-8") + "=" + URLEncoder.encode(year, "UTF-8"));

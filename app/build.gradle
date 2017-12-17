@@ -28,12 +28,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
-    // Material Dialog (see: https://github.com/javiersantos/MaterialStyledDialogs)
+
+
 
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
 
+    // Material Dialog (see: https://github.com/javiersantos/MaterialStyledDialogs)
+    compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
 
     // for Google Map API
     compile 'com.google.android.gms:play-services:10.2.1'
@@ -50,6 +52,8 @@ dependencies {
 
     //Android-Bootstrap library
     compile 'com.beardedhen:androidbootstrap:2.3.2'
+
+    compile 'net.soulwolf.widget:dialogBuilder:1.0.0'
 
 
 }

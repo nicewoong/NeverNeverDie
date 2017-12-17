@@ -1,12 +1,17 @@
 package com.nicewoong.neverneverdie.ui;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.nicewoong.neverneverdie.R;
 import com.nicewoong.neverneverdie.application.MySharedPreference;
 import com.nicewoong.neverneverdie.backgroundService.AlwaysSafeService;
@@ -32,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public Button checkAroundMeButton;
     public Button alwaysSafeCheckingButton;
+    public BootstrapButton buttonChangeLocation;
+    public TextView textCurrentLocation;
 
     public RippleBackground rippleBackground; // background 퍼지는 annimation
     /*
@@ -92,11 +99,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         checkAroundMeButton.setOnClickListener(this); // Register onClickListener
         alwaysSafeCheckingButton = (Button)findViewById(R.id.button_always_safe_checking);
         alwaysSafeCheckingButton.setOnClickListener(this); // Register onClickListener
+        buttonChangeLocation = (BootstrapButton) findViewById(R.id.button_change_location);
+        buttonChangeLocation.setOnClickListener(this); // Register onClickListener
+        textCurrentLocation = (TextView) findViewById(R.id.text_current_location);
+
+
         if(sharedPreferences.getAlwaysSafeSwitch()) { // on 이면 button 도 on으로 표시해줘야 합니다
             alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOn));
         }else {
             alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOff));
         }
+
+
 
 
     }
@@ -142,6 +156,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
+            case R.id.button_change_location:
+
+                createChooseCityDialog();
+
+                break;
+
             default:
 
         }// end of switch
@@ -149,6 +169,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }// end of onClick()
 
+
+    public void createChooseCityDialog() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("도시를 선택해주세요.")
+                .setItems(R.array.cities, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        String[] cities = getResources().getStringArray(R.array.cities);
+                        textCurrentLocation.setText(cities[which]);
+                        // TODO: 2017. 12. 17. add operation to get Accident data HERE
+
+                        dialog.dismiss();
+                    }
+                });
+        builder.create();
+
+        builder.show();
+
+    }
 
     /**
      * Always-Safe on off 버튼을 클릭했을 때 작업을 수행하는 메서드

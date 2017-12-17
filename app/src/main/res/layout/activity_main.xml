@@ -29,6 +29,7 @@
     </com.skyfishjy.library.RippleBackground>
 
 
+    <!-- all contents -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -58,11 +59,13 @@
                 android:textSize="30sp"
                 android:textStyle="bold"
                 android:layout_marginRight="20dp"
+                android:id="@+id/text_current_location"
                 android:text = "DAEGU"/>
 
 
             <!-- chagne current location button -->
             <com.beardedhen.androidbootstrap.BootstrapButton
+                android:id="@+id/button_change_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"

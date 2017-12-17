@@ -1,5 +1,7 @@
 package com.nicewoong.neverneverdie.backgroundService;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +11,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.nicewoong.neverneverdie.R;
 import com.nicewoong.neverneverdie.ui.MainActivity;
 
 import org.json.JSONArray;
@@ -64,8 +68,8 @@ public class AlwaysSafeService extends Service implements LocationListener {
      */
     public void setUpLocationManager() {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
     }
 
 
@@ -143,6 +147,33 @@ public class AlwaysSafeService extends Service implements LocationListener {
      *  Notification 을 줍니다
      */
     public void sendDangerousAroundNotification(Context context) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.never_die_app_icon)
+                        .setContentTitle("죽지마세요!")
+                        .setContentText("주변에 교통사고발생지가 있습니다 조심하세요! ");
+
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        // Because clicking the notification opens a new ("special") activity, there's
+        // no need to create an artificial back stack.
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+
+        // Sets an ID for the notification
+        int mNotificationId = 001;
+// Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+// Builds the notification and issues it.
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
 
     }
 
@@ -157,6 +188,10 @@ public class AlwaysSafeService extends Service implements LocationListener {
         CURRENT_LONGITUDE = location.getLongitude();
 
         Log.d(TAG_PROCEDURE_DEBUG,  "isDangerousAround() in AlwaysSafeService.onLocationChanged :  " + isDangerousAround());
+
+        if( ! isDangerousAround() ) {
+            sendDangerousAroundNotification(getApplicationContext());
+        }
 
 
     }
