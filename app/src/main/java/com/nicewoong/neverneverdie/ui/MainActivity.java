@@ -14,6 +14,7 @@ import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathAPIRequestT
 import com.nicewoong.neverneverdie.trafficAccidentDeath.AccidentDeathData;
 import com.nicewoong.neverneverdie.ui.uiMap.CheckAroundMeMapActivity;
 import com.nicewoong.neverneverdie.ui.util.NeverDieDialog;
+import com.skyfishjy.library.RippleBackground;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button checkAroundMeButton;
     public Button alwaysSafeCheckingButton;
 
+    public RippleBackground rippleBackground; // background 퍼지는 annimation
     /*
     Static variable that can be accessed anywhere in the application
      */
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         sharedPreferences = MySharedPreference.getInstance(getApplicationContext());
         registerButtonsUI();// Button Register
+        setUpBackgroundService();
 
         // Publish updating AccidentDeathData through HTTP request
         try {
@@ -61,6 +64,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
 
+    }
+
+    public void setUpBackgroundService() {
+        rippleBackground = (RippleBackground)findViewById(R.id.background_ripple_annimation);
+        if(sharedPreferences.getAlwaysSafeSwitch()) { // 만약 on 상태라면 애니메이션 작동해줘야함
+            rippleBackground.startRippleAnimation();
+            // 만약 서비스가 실행되고 있지 않을 수 있으므로 !
+            Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
+            startService(intent); // 서비스 시작
+        }else {
+            rippleBackground.stopRippleAnimation();
+            // 만약 서비스가 실행되고 있을 수도 있으므로
+            Intent intent = new Intent(getApplicationContext(), AlwaysSafeService.class);
+            stopService(intent); // 서비스 종료
+        }
     }
 
 
@@ -79,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else {
             alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOff));
         }
+
+
     }
 
 
@@ -135,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 버튼이 on 되면 백그라운드 서비스 AlwaysSafeService 를 실행합니다
      */
     public void operateAlwaysSafeCheckingButton() {
-        if(sharedPreferences.getAlwaysSafeSwitch()) { // 백그라운드 서비스 스위치 ON->OFF
+        if(sharedPreferences.getAlwaysSafeSwitch()) { //켜져있으면, 끄자 백그라운드 서비스 스위치 ON->OFF
             alwaysSafeCheckingButton.setText("Always-Safe OFF");
             alwaysSafeCheckingButton.setBackgroundColor(getResources().getColor(R.color.colorButtonAlwaysSafeOff));
 
@@ -143,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             stopService(intent); // 서비스 종료
 
             sharedPreferences.setAlwaysSafeSwitch(false); // 스위치 설정을 off 로 저장
+            rippleBackground.stopRippleAnimation();
 
         }else { // 백그라운드 서비스 스위치 On -> OFF
             alwaysSafeCheckingButton.setText("Always-Safe ON");
@@ -155,8 +176,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startService(intent); // 서비스 시작
 
             sharedPreferences.setAlwaysSafeSwitch(true); // 스위치 설정을 on 으로 저장
+            rippleBackground.startRippleAnimation();
+
         }
     }
+
 
 
 }// end of class

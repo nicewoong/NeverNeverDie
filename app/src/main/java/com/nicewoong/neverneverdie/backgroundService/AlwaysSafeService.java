@@ -76,11 +76,13 @@ public class AlwaysSafeService extends Service implements LocationListener {
      * @return 현재 위치 100m 이내에 교통사망사고 발생지가 있으면 True 없으면 False
      */
     public boolean isDangerousAround() {
-        JSONArray accidentDataList = MainActivity.accidentDeathData.getAccidentDeathList();
-        if (accidentDataList == null) {
+
+        if (MainActivity.accidentDeathData == null || MainActivity.accidentDeathData.getAccidentDeathList() == null) {
             Log.d(TAG_PROCEDURE_DEBUG, "isDangerousAround(), accidentDataList is NULL! " );
             return false;
         }
+
+        JSONArray accidentDataList = MainActivity.accidentDeathData.getAccidentDeathList();
 
         double distance ;
         for( int i = 0; i < accidentDataList.length() ; i++) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -13,48 +14,98 @@
 
 
 
+    <!-- background ripple image -->
+    <com.skyfishjy.library.RippleBackground
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/background_ripple_annimation"
+        app:rb_color="#0099CC"
+        app:rb_radius="32dp"
+        app:rb_rippleAmount="4"
+        app:rb_duration="3000"
+        app:rb_scale="6"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+    </com.skyfishjy.library.RippleBackground>
 
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true">
 
-        <!--Main image-->
-        <ImageButton
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:background="@drawable/never_die"
 
-        />
+        <!-- show current location, button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1.2">
 
-        <!-- check around my location button-->
-        <Button
-            android:id="@+id/button_check_around_me"
-            android:text="@string/button_check_around_me_text"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:background="#DB7093"
-            android:layout_width="280dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:textSize="20sp"/>
 
-        <!-- Turn on/off button for background checking service-->
-        <Button
-            android:id="@+id/button_always_safe_checking"
-            android:text="@string/button_always_safe_off_text"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:background="#778899"
-            android:layout_width="280dp"
-            android:layout_height="80dp"
+
+        </LinearLayout>
+
+        <!-- main image -->
+        <RelativeLayout
             android:layout_gravity="center"
-            android:textSize="20sp"
-            android:layout_marginTop="20dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <!-- Main image -->
+            <ImageButton
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:background="@drawable/never_die"
+
+                />
+
+        </RelativeLayout>
+
+
+
+        <!-- main buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+
+            <!-- check around my location button-->
+            <Button
+                android:id="@+id/button_check_around_me"
+                android:text="@string/button_check_around_me_text"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="#DB7093"
+                android:layout_width="280dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:textSize="20sp"/>
+
+            <!-- Turn on/off button for background checking service-->
+            <Button
+                android:id="@+id/button_always_safe_checking"
+                android:text="@string/button_always_safe_off_text"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:background="#778899"
+                android:layout_width="280dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"/>
+
+        </LinearLayout>
+
 
 
     </LinearLayout>
