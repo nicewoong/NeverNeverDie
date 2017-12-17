@@ -33,11 +33,19 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
-    compile 'com.google.android.gms:play-services:10.2.1'
+
+
     // for Google Map API
-    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.google.android.gms:play-services:10.2.1'
+
     // multidex support.
-    compile 'com.google.maps.android:android-maps-utils:0.4+'
+    compile 'com.android.support:multidex:1.0.0'
+
     // 구글맵의 클러스터링 기능 사용
+    compile 'com.google.maps.android:android-maps-utils:0.4+'
+
+
+    // ripple background (백그라운드 퍼지는 애니메이션 )
+    compile 'com.skyfishjy.ripplebackground:library:1.0.1'
 
 }

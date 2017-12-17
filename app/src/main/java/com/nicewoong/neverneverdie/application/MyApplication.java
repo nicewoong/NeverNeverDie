@@ -7,7 +7,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 /**
- * Created by nicewoong on 2017. 4. 23..
+ * Created by nicewoong
  */
 
 public class MyApplication extends Application {
