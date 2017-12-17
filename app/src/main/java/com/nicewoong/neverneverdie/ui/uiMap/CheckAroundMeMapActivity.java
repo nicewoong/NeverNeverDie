@@ -143,7 +143,7 @@ public class CheckAroundMeMapActivity extends FragmentActivity implements OnMapR
             // 현재위치 중심 마커를 설정합니다. return 되는 marker 는 나중에 변경가능
             currentMarker = map.addMarker(new MarkerOptions()
                     .position(currentLatLng)
-                    .title("Current Location"));
+                    .title("현재위치"));
 
             // 100m 주변으로 원을그려줍니다
             // 우선 서클옵션을 만들고

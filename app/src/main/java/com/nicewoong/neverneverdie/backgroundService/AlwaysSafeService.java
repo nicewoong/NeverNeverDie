@@ -149,7 +149,7 @@ public class AlwaysSafeService extends Service implements LocationListener {
     public void sendDangerousAroundNotification(Context context) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.never_die_app_icon)
+                        .setSmallIcon(R.drawable.skull_icon)
                         .setContentTitle("죽지마세요!")
                         .setContentText("주변에 교통사고발생지가 있습니다 조심하세요! ");
 

@@ -1,24 +1,42 @@
 <resources>
+    <!--&lt;!&ndash;App Name&ndash;&gt;-->
+    <!--<string name="app_name">Never Never Die !</string>-->
+
+    <!--&lt;!&ndash;Button Text on MainActivity&ndash;&gt;-->
+    <!--<string name="button_check_around_me_text">Check around me !</string>-->
+    <!--<string name="button_always_safe_on_text">Always-Safe ON</string>-->
+    <!--<string name="button_always_safe_off_text">Always-Safe OFF</string>-->
+
+    <!--&lt;!&ndash; Dangerous spot alert Dialog Message&ndash;&gt;-->
+    <!--<string name="dangerous_spot_alert_dialog_message">Be careful! It\'s a dangerous area near!  </string>-->
+    <!--<string name="dangerous_spot_alert_dialog_title">Never Die !!</string>-->
+    <!--<string name="dangerous_spot_alert_dialog_confirm_button">I\'ll never die !</string>-->
+
+    <!--&lt;!&ndash; Always safe on Dialog Message&ndash;&gt;-->
+    <!--<string name="always_safe_on_dialog_message">I\'ll keep you safe all the time even while you don\'t use the application.-->
+        <!--I\'ll give you warning when you are near dangerous area detecting your location signal.-->
+        <!--\nDo not die.</string>-->
+    <!--<string name="always_safe_on_dialog_title">Always safe</string>-->
+    <!--<string name="always_safe_on_dialog_confirm_button">Keep me safe</string>-->
+
     <!--App Name-->
-    <string name="app_name">Never Never Die !</string>
+    <string name="app_name">죽지않아!</string>
 
     <!--Button Text on MainActivity-->
-    <string name="button_check_around_me_text">Check around me !</string>
+    <string name="button_check_around_me_text">내 주변 확인하기</string>
     <string name="button_always_safe_on_text">Always-Safe ON</string>
     <string name="button_always_safe_off_text">Always-Safe OFF</string>
 
     <!-- Dangerous spot alert Dialog Message-->
-    <string name="dangerous_spot_alert_dialog_message">Be careful! It\'s a dangerous area near!  </string>
-    <string name="dangerous_spot_alert_dialog_title">Never Die !!</string>
-    <string name="dangerous_spot_alert_dialog_confirm_button">I\'ll never die !</string>
+    <string name="dangerous_spot_alert_dialog_message">조심하세요! 이 주변은 위험합니다!  </string>
+    <string name="dangerous_spot_alert_dialog_title">죽지 마세요 !!</string>
+    <string name="dangerous_spot_alert_dialog_confirm_button">죽지않아!</string>
 
     <!-- Always safe on Dialog Message-->
-    <string name="always_safe_on_dialog_message">I\'ll keep you safe all the time even while you don\'t use the application.
-        I\'ll give you warning when you are near dangerous area detecting your location signal.
-        \nDo not die.</string>
-    <string name="always_safe_on_dialog_title">Always safe</string>
-    <string name="always_safe_on_dialog_confirm_button">Keep me safe</string>
-
-
+    <string name="always_safe_on_dialog_message">여러분이 앱을 사용하지 않더라도 계속해서 안전하게 지켜드릴게요.
+       만약 위험한 신호가 감지되면 여러분에게 곧 바로 알림을 줄게요.
+        \n죽지마세요.</string>
+    <string name="always_safe_on_dialog_title">Always Safe</string>
+    <string name="always_safe_on_dialog_confirm_button">항상 지켜줘</string>
 
 </resources>

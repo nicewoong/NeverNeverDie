@@ -60,7 +60,7 @@
                 android:textStyle="bold"
                 android:layout_marginRight="20dp"
                 android:id="@+id/text_current_location"
-                android:text = "DAEGU"/>
+                android:text = "대구광역시"/>
 
 
             <!-- chagne current location button -->
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Change"
+                android:text="지역변경"
                 app:bootstrapBrand="success"
                 app:bootstrapSize="sm"
                 app:buttonMode="regular"
